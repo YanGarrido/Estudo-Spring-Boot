@@ -38,6 +38,17 @@ public class ProdutoController {
       produtoService.deletarProduto(id);
     return ResponseEntity.noContent().build();
   }
+
+  @PutMapping("/{id}/aumentar")
+  public ResponseEntity adicionarEstoque(@PathVariable Long id, @RequestParam Integer quantEstoque){
+    produtoService.adicionarEstoque(id, quantEstoque);
+    return ResponseEntity.ok("Estoque adicionado ao produto");
+  }
+  @PutMapping("/{id}/reduzir")
+  public ResponseEntity reduzirEstoque(@PathVariable Long id, @RequestParam Integer quantEstoque){
+    produtoService.reduzirEstoque(id, quantEstoque);
+    return ResponseEntity.ok("Estoque do produto reduzido");
+  }
 }
 
 

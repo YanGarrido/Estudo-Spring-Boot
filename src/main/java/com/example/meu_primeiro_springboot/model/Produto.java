@@ -11,12 +11,14 @@ public class Produto {
 
   private String name;
   private Double preco;
+  private Integer quantEstoque;
 
   public Produto () {}
 
-  public Produto (String name, Double preco){
+  public Produto (String name, Double preco, Integer quantEstoque){
     this.name = name;
     this.preco = preco;
+    this.quantEstoque = quantEstoque;
   }
 
   public Long getId() {
@@ -37,6 +39,14 @@ public class Produto {
 
   public void setPreco(Double preco) {
     this.preco = preco;
+  }
+
+  public void setQuantEstoque(Integer quantEstoque) {
+    this.quantEstoque = quantEstoque;
+  }
+
+  public Integer getQuantEstoque() {
+    return quantEstoque;
   }
 }
 

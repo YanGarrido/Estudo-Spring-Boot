@@ -37,4 +37,30 @@ public class ProdutoService {
       }
      produtoRepository.deleteById(id);
   }
+
+  public Produto adicionarEstoque(Long id, Integer quantEstoque){
+    Produto produto = produtoRepository.findById(id)
+        .orElseThrow(() -> new RecursoNaoEncontradoException("Produto com ID"+id+" não encontrado"));
+    if(produto.getQuantEstoque() == null){
+      produto.setQuantEstoque(0);
+    }
+    produto.setQuantEstoque(quantEstoque += produto.getQuantEstoque());
+
+    return produtoRepository.save(produto);
+
+  }
+  public Produto reduzirEstoque(Long id, Integer quantEstoque){
+    Produto produto = produtoRepository.findById(id)
+        .orElseThrow(() -> new RecursoNaoEncontradoException("Produto com ID"+id+" não encontrado"));
+    if (produto.getQuantEstoque() == null){
+      produto.setQuantEstoque(0);
+    }
+    quantEstoque = produto.getQuantEstoque() - quantEstoque;
+    if (quantEstoque < 0){
+      throw new RuntimeException("Estoque insuficiente");
+    }
+    produto.setQuantEstoque(quantEstoque);
+
+    return produtoRepository.save(produto);
+  }
 }
