@@ -1,9 +1,7 @@
 package com.example.meu_primeiro_springboot.controller;
 
-import com.example.meu_primeiro_springboot.exceptions.RecursoNaoEncontradoException;
 import com.example.meu_primeiro_springboot.model.Produto;
 import com.example.meu_primeiro_springboot.service.ProdutoService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
