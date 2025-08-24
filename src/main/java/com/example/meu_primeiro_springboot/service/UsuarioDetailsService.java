@@ -2,11 +2,14 @@ package com.example.meu_primeiro_springboot.service;
 
 import com.example.meu_primeiro_springboot.model.Usuario;
 import com.example.meu_primeiro_springboot.repository.UsuarioRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 public class UsuarioDetailsService implements UserDetailsService {
@@ -21,13 +24,14 @@ public class UsuarioDetailsService implements UserDetailsService {
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
     Usuario usuario = usuarioRepository.findByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+        .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o email: " + email));
 
-    return User.builder()
-        .username(usuario.getEmail())
-        .password(usuario.getSenha())
-        .roles("USER")
-        .build();
+    // =====> AQUI ESTÁ A CORREÇÃO <=====
+    // Agora o usuário recebe a permissão "ROLE_USER"
+    return new User(
+        usuario.getEmail(),
+        usuario.getSenha(),
+        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
+    );
   }
-
 }

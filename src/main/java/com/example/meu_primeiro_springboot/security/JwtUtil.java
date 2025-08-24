@@ -2,7 +2,6 @@ package com.example.meu_primeiro_springboot.security;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -17,23 +16,25 @@ public class JwtUtil {
   public static String generateToken(String email) {
     return Jwts.builder()
         .setSubject(email)
+        .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-        .signWith(key, SignatureAlgorithm.HS256)
+        .signWith(key)
         .compact();
   }
 
   public static String extractEmail(String token) {
     return Jwts.parserBuilder()
         .setSigningKey(key).build()
-        .parseClaimsJwt(token).getBody().getSubject();
+        // =====> MUDANÇA IMPORTANTE AQUI <=====
+        .parseClaimsJws(token).getBody().getSubject(); // Era parseClaimsJwt
   }
 
-  public static boolean validateToken(String token){
-    try{
-      Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token);
+  public static boolean validateToken(String token) {
+    try {
+      // =====> E MUDANÇA IMPORTANTE AQUI <=====
+      Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token); // Era parseClaimsJwt
       return true;
-    }
-    catch (JwtException e){
+    } catch (JwtException e) {
       return false;
     }
   }
