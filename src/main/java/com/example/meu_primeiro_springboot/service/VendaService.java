@@ -1,6 +1,7 @@
 package com.example.meu_primeiro_springboot.service;
 
 
+import com.example.meu_primeiro_springboot.dto.ItemVendaResponseDto;
 import com.example.meu_primeiro_springboot.dto.VendaRequestDto;
 
 import com.example.meu_primeiro_springboot.dto.VendaResponseDto;
@@ -47,8 +48,31 @@ public class VendaService {
   }
 
 
-  public List<Venda> listarVendas(){
-    return vendaRepository.findAll();
+  public List<VendaResponseDto> listarVendas(){
+    // 1. Busca todas as vendas do banco
+    List<Venda> vendas = vendaRepository.findAll();
+
+    // 2. Converte cada Venda (entidade) para VendaResponseDto
+    return vendas.stream().map(venda -> {
+      // Converte a lista de ItemVenda (entidade) para ItemVendaResponseDto
+      List<ItemVendaResponseDto> itensDto = venda.getItens().stream()
+          .map(item -> new ItemVendaResponseDto(
+              item.getId(),
+              item.getProduto().getName(),
+              item.getQuantidade(),
+              item.getProduto().getPreco()
+          )).collect(Collectors.toList());
+
+      // Cria o DTO da Venda principal
+      return new VendaResponseDto(
+          venda.getId(),
+          venda.getData(),
+          venda.getValorTotal(),
+          venda.getFormaPagamento(),
+          venda.getUsuario().getName(),
+          itensDto
+      );
+    }).collect(Collectors.toList());
   }
 
 
@@ -117,20 +141,22 @@ public class VendaService {
     Venda vendaSalva = vendaRepository.save(novaVenda);
 
 
-    // 3. Converte a entidade salva para um DTO de resposta
+    List<ItemVendaResponseDto> itensDto = vendaSalva.getItens().stream()
+        .map(item -> new ItemVendaResponseDto(
+            item.getId(),
+            item.getProduto().getName(),
+            item.getQuantidade(),
+            item.getProduto().getPreco()
+        )).collect(Collectors.toList());
 
+    // 2. Agora, passe essa lista como o último argumento
     return new VendaResponseDto(
-
         vendaSalva.getId(),
-
         vendaSalva.getData(),
-
         vendaSalva.getValorTotal(),
-
         vendaSalva.getFormaPagamento(),
-
-        vendaSalva.getUsuario().getName()
-
+        vendaSalva.getUsuario().getName(),
+        itensDto // <-- A lista de itens que estava faltando
     );
 
   }

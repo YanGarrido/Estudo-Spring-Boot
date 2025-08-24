@@ -22,7 +22,7 @@ public class VendaController {
   }
 
   @GetMapping
-  public List<Venda> buscarVendas(){
+  public List<VendaResponseDto> buscarVendas(){
     return vendaService.listarVendas();
   }
 
