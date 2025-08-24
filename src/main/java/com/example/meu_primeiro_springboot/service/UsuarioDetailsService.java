@@ -26,8 +26,6 @@ public class UsuarioDetailsService implements UserDetailsService {
     Usuario usuario = usuarioRepository.findByEmail(email)
         .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o email: " + email));
 
-    // =====> AQUI ESTÁ A CORREÇÃO <=====
-    // Agora o usuário recebe a permissão "ROLE_USER"
     return new User(
         usuario.getEmail(),
         usuario.getSenha(),

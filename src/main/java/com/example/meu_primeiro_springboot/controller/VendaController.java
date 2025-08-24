@@ -3,7 +3,6 @@ package com.example.meu_primeiro_springboot.controller;
 
 import com.example.meu_primeiro_springboot.dto.VendaResponseDto;
 import com.example.meu_primeiro_springboot.dto.VendaRequestDto;
-import com.example.meu_primeiro_springboot.model.Venda;
 import com.example.meu_primeiro_springboot.service.VendaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

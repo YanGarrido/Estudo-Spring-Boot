@@ -25,13 +25,13 @@ public class JwtUtil {
   public static String extractEmail(String token) {
     return Jwts.parserBuilder()
         .setSigningKey(key).build()
-        // =====> MUDANÇA IMPORTANTE AQUI <=====
-        .parseClaimsJws(token).getBody().getSubject(); // Era parseClaimsJwt
+
+        .parseClaimsJws(token).getBody().getSubject();
   }
 
   public static boolean validateToken(String token) {
     try {
-      // =====> E MUDANÇA IMPORTANTE AQUI <=====
+
       Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token); // Era parseClaimsJwt
       return true;
     } catch (JwtException e) {

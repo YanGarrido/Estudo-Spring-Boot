@@ -28,8 +28,7 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<?> registrarUsuario(@RequestBody Map<String, String> request) {
-    // =====> AQUI ESTÁ A CORREÇÃO <=====
-    // Agora ele pega a senha ("senha") do JSON que você envia.
+
     Usuario usuario = usuarioService.registrarUsuario(request.get("name"), request.get("email"), request.get("senha"));
     return ResponseEntity.ok(usuario);
   }
@@ -41,7 +40,7 @@ public class AuthController {
           new UsernamePasswordAuthenticationToken(request.get("email"), request.get("senha"))
       );
 
-      String email = authentication.getName(); // .getName() também retorna o principal (username/email)
+      String email = authentication.getName();
       String token = JwtUtil.generateToken(email);
 
       return ResponseEntity.ok(Map.of("token", token));
