@@ -1,0 +1,6 @@
+package com.example.meu_primeiro_springboot.dto;
+
+import java.util.List;
+
+public record VendaRequestDto(String formaPagamento, List<ItemVendaDto> itens) {
+}
