@@ -12,16 +12,24 @@ public class Venda {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private  Long id;
+
   private LocalDate data;
+
   private Double valorTotal;
-  private String formaPagamento;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "cliente_id", nullable = false)
+  private Cliente cliente;
 
   @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
   private List<ItemVenda> itens;
 
-  @ManyToOne
-  @JoinColumn(name = "usuario_id")
-  private Usuario usuario;
+  @OneToOne(mappedBy = "venda", cascade = CascadeType.ALL)
+  private Pagamento pagamento;
+
+  @OneToOne(mappedBy = "venda", cascade = CascadeType.ALL)
+  private Logistica logistica;
+
 
   public void calcularValorTotal(){
     this.valorTotal = itens.stream().mapToDouble(item -> item.getProduto()
@@ -29,28 +37,41 @@ public class Venda {
   }
   public Venda() {}
 
-  public Venda(LocalDate data, Double valorTotal, String formaPagamento, List<ItemVenda> itens, Usuario usuario){
+  public Venda(LocalDate data, Double valorTotal, List<ItemVenda> itens, Cliente cliente, Pagamento pagamento, Logistica logistica){
     this.data = data;
     this.valorTotal = valorTotal;
-    this.formaPagamento = formaPagamento;
+    this.pagamento = pagamento;
+    this.logistica = logistica;
     this.itens = itens;
-    this.usuario = usuario;
+    this.cliente = cliente;
   }
 
-  public void setUsuario(Usuario usuario) {
-    this.usuario = usuario;
+  public void setCliente(Cliente cliente) {
+    this.cliente = cliente;
   }
 
-  public Usuario getUsuario() {
-    return usuario;
+  public Cliente getCliente() {
+    return cliente;
+  }
+
+  public void setLogistica(Logistica logistica) {
+    this.logistica = logistica;
+  }
+
+  public void setPagamento(Pagamento pagamento) {
+    this.pagamento = pagamento;
+  }
+
+  public Logistica getLogistica() {
+    return logistica;
+  }
+
+  public Pagamento getPagamento() {
+    return pagamento;
   }
 
   public void setData(LocalDate data) {
     this.data = data;
-  }
-
-  public void setFormaPagamento(String formaPagamento) {
-    this.formaPagamento = formaPagamento;
   }
 
   public void setValorTotal(Double valorTotal) {
@@ -77,7 +98,4 @@ public class Venda {
     return data;
   }
 
-  public String getFormaPagamento() {
-    return formaPagamento;
-  }
 }

@@ -79,7 +79,7 @@ public class VendaService {
 
       ItemVenda itemVenda = new ItemVenda();
       itemVenda.setProduto(produto);
-      itemVenda.setQuantidade((long) itemDto.quantidade());
+      itemVenda.setQuantidade(itemDto.quantidade());
       itemVenda.setVenda(novaVenda);
 
       return itemVenda;

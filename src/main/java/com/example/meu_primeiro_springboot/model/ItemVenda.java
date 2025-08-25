@@ -18,18 +18,20 @@ public class ItemVenda {
   @JoinColumn(name = "produto_id")
   private Produto produto;
 
-  private Long quantidade;
+  private Integer quantidade;
+
+  private Double precoUnitario;
 
   public ItemVenda() {
   }
 
-  public ItemVenda(Venda venda, Produto produto, Long quantidade){
+  public ItemVenda(Venda venda, Produto produto, Integer quantidade){
     this.venda = venda;
-    this.quantidade =quantidade;
-    this.produto =produto;
+    this.quantidade = quantidade;
+    this.produto = produto;
   }
 
-  public void setQuantidade(Long quantidade) {
+  public void setQuantidade(Integer quantidade) {
     this.quantidade = quantidade;
   }
 
@@ -45,7 +47,7 @@ public class ItemVenda {
     return id;
   }
 
-  public Long getQuantidade() {
+  public Integer getQuantidade() {
     return quantidade;
   }
 
