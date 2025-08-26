@@ -3,6 +3,7 @@ package com.example.meu_primeiro_springboot.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "devolucoes")
@@ -19,12 +20,25 @@ public class Devolucao {
   @JoinColumn(name = "venda_id")
   private Venda venda;
 
+  @OneToMany(mappedBy = "devolucao", cascade = CascadeType.ALL)
+  private List<ItemDevolucao> itensDevolvidos;
+
+
   public Devolucao(){}
 
-  public Devolucao(LocalDate data, String motivoDevolucao, Venda venda){
+  public Devolucao(LocalDate data, String motivoDevolucao, Venda venda, List<ItemDevolucao> itensDevolvidos){
     this.data = data;
     this.motivoDevolucao = motivoDevolucao;
     this.venda = venda;
+    this.itensDevolvidos = itensDevolvidos;
+  }
+
+  public void setItensDevolvidos(List<ItemDevolucao> itensDevolvidos) {
+    this.itensDevolvidos = itensDevolvidos;
+  }
+
+  public List<ItemDevolucao> getItensDevolvidos() {
+    return itensDevolvidos;
   }
 
   public void setVenda(Venda venda) {
