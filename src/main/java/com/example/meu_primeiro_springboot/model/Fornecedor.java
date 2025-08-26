@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "fornecedores")
-public class Fornecedor {
+public class Fornecedor extends Usuario {
   @Column(unique = true)
   private String cnpj;
 

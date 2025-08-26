@@ -2,10 +2,12 @@ package com.example.meu_primeiro_springboot.service;
 
 import com.example.meu_primeiro_springboot.model.Cliente;
 import com.example.meu_primeiro_springboot.repository.ClienteRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ClienteService {
   private final ClienteRepository clienteRepository;
 

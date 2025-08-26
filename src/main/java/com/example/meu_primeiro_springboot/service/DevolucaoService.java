@@ -48,7 +48,8 @@ public class DevolucaoService {
 
     List<ItemDevolucao> itensParaDevolver = new ArrayList<>();
     for (ItemDevolucaoDto itemDto : dto.itensDevolvidos()){
-      Produto produtoDevolvido = produtoRepository.findById(itemDto.produtoId().orElseThrow(() -> new RecursoNaoEncontradoException("Produto com ID " + itemDto.produtoId() +" não encontrado")));
+      Produto produtoDevolvido = produtoRepository.findById(itemDto.produtoId())
+          .orElseThrow(() -> new RecursoNaoEncontradoException("Produto com ID " + itemDto.produtoId() +" não encontrado"));
 
       ItemDevolucao itemDevolucao = new ItemDevolucao();
       itemDevolucao.setProduto(produtoDevolvido);

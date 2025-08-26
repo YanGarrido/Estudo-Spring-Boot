@@ -12,6 +12,10 @@ public class ItemDevolucao {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "devolucao_id", nullable = false)
+  private Devolucao devolucao;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "produto_id", nullable = false)
   private Produto produto;
 
@@ -20,9 +24,18 @@ public class ItemDevolucao {
 
   public ItemDevolucao(){}
 
-  public ItemDevolucao(Produto produto, Integer quantidade){
+  public ItemDevolucao(Produto produto, Integer quantidade, Devolucao devolucao){
     this.produto = produto;
     this.quantidade = quantidade;
+    this.devolucao = devolucao;
+  }
+
+  public Devolucao getDevolucao() {
+    return devolucao;
+  }
+
+  public void setDevolucao(Devolucao devolucao) {
+    this.devolucao = devolucao;
   }
 
   public void setQuantidade(Integer quantidade) {
