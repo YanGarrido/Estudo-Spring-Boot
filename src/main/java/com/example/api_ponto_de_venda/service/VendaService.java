@@ -5,13 +5,12 @@ import com.example.api_ponto_de_venda.dto.ItemVendaResponseDto;
 import com.example.api_ponto_de_venda.dto.VendaRequestDto;
 import com.example.api_ponto_de_venda.dto.VendaResponseDto;
 import com.example.api_ponto_de_venda.model.*;
-import com.example.api_ponto_de_venda.repository.ProdutoRepository;
-import com.example.api_ponto_de_venda.repository.UsuarioRepository;
-import com.example.api_ponto_de_venda.repository.VendaRepository;
+import com.example.api_ponto_de_venda.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -20,14 +19,22 @@ public class VendaService {
 
   private final VendaRepository vendaRepository;
   private final ProdutoRepository produtoRepository;
-  private final UsuarioRepository usuarioRepository;
+  private final DevolucaoRepository devolucaoRepository;
+  private final ClienteRepository clienteRepository;
+  private final EstoqueRepository estoqueRepository;
 
 
-  public VendaService(VendaRepository vendaRepository, ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
+  public VendaService(VendaRepository vendaRepository,
+                      ProdutoRepository produtoRepository,
+                      ClienteRepository clienteRepository,
+                      DevolucaoRepository devolucaoRepository,
+                      EstoqueRepository estoqueRepository) {
 
     this.vendaRepository = vendaRepository;
     this.produtoRepository = produtoRepository;
-    this.usuarioRepository = usuarioRepository;
+    this.devolucaoRepository = devolucaoRepository;
+    this.clienteRepository = clienteRepository;
+    this.estoqueRepository = estoqueRepository;
 
   }
 
@@ -37,45 +44,47 @@ public class VendaService {
 
     return vendas.stream().map(venda -> {
       List<ItemVendaResponseDto> itensDto = venda.getItens().stream()
-          .map(item -> new ItemVendaResponseDto(
-              item.getId(),
-              item.getProduto().getName(),
-              item.getQuantidade(),
-              item.getProduto().getPreco()
-          )).collect(Collectors.toList());
+              .map(item -> new ItemVendaResponseDto(
+                      item.getId(),
+                      item.getProduto().getName(),
+                      item.getQuantidade(),
+                      item.getProduto().getPreco()
+              )).collect(Collectors.toList());
 
       return new VendaResponseDto(
-          venda.getId(),
-          venda.getData(),
-          venda.getValorTotal(),
-          venda.getFormaPagamento(),
-          venda.getUsuario().getName(),
-          itensDto
+              venda.getId(),
+              venda.getData(),
+              venda.getValorTotal(),
+              venda.getPagamento().getMetodoPagamento(),
+              venda.getCliente().getName(),
+              itensDto
       );
     }).collect(Collectors.toList());
   }
 
 
   @Transactional
-  public VendaResponseDto adicionarVenda(VendaRequestDto dto, String emailUsuario) {
-    Usuario usuario = usuarioRepository.findByEmail(emailUsuario)
-        .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + emailUsuario));
+  public VendaResponseDto adicionarVenda(VendaRequestDto dto, String cpf) {
+    Cliente cliente = clienteRepository.findByCpf(cpf)
+        .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + cpf));
 
     Venda novaVenda = new Venda();
-    novaVenda.setUsuario(usuario);
+    novaVenda.setCliente(cliente);
     novaVenda.setData(LocalDate.now());
-    novaVenda.setFormaPagamento(dto.formaPagamento());
+    //novaVenda.setFormaPagamento(dto.formaPagamento());
+    Pagamento pagamento = new Pagamento();
+    pagamento.setMetodoPagamento(dto.metodoPagamento());
 
     List<ItemVenda> itens = dto.itens().stream().map(itemDto -> {
-
       Produto produto = produtoRepository.findById(itemDto.produtoId())
           .orElseThrow(() -> new RuntimeException("Produto com ID " + itemDto.produtoId() + " não encontrado."));
-
-      if (produto.getQuantEstoque() < itemDto.quantidade()) {
+      Estoque estoque = estoqueRepository.findById(itemDto.produtoId())
+              .orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+      if (estoque.getQuantidade() < itemDto.quantidade()) {
         throw new RuntimeException("Estoque insuficiente para o produto " + produto.getName());
       }
 
-      produto.setQuantEstoque(produto.getQuantEstoque() - itemDto.quantidade());
+      estoque.setQuantidade(estoque.getQuantidade() - itemDto.quantidade());
 
       ItemVenda itemVenda = new ItemVenda();
       itemVenda.setProduto(produto);
@@ -103,8 +112,8 @@ public class VendaService {
         vendaSalva.getId(),
         vendaSalva.getData(),
         vendaSalva.getValorTotal(),
-        vendaSalva.getFormaPagamento(),
-        vendaSalva.getUsuario().getName(),
+        vendaSalva.getPagamento().getMetodoPagamento(),
+        vendaSalva.getCliente().getName(),
         itensDto
     );
 

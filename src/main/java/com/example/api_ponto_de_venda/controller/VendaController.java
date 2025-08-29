@@ -27,8 +27,8 @@ public class VendaController {
 
   @PostMapping()
   public ResponseEntity<VendaResponseDto> criarVenda(@RequestBody VendaRequestDto vendaDto, Authentication authentication){
-    String emailUsuario = authentication.getName();
-    VendaResponseDto novaVenda = vendaService.adicionarVenda(vendaDto, emailUsuario);
+    String cpf = authentication.getName();
+    VendaResponseDto novaVenda = vendaService.adicionarVenda(vendaDto, cpf);
     return ResponseEntity.status(HttpStatus.CREATED).body(novaVenda);
   }
 }

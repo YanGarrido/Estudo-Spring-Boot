@@ -9,6 +9,8 @@ import java.util.List;
 public class Cliente extends Usuario {
 
   private String telefone;
+  private String cpf;
+
 
   private String endereco;
 
@@ -17,13 +19,42 @@ public class Cliente extends Usuario {
 
   public  Cliente(){}
 
-  public Cliente(String telefone,String endereco, List<Venda> historicoDeCompras){
+  public Cliente(String cpf, String telefone,String endereco, List<Venda> historicoDeCompras){
     this.endereco = endereco;
     this.telefone = telefone;
     this.historicoDeCompras = historicoDeCompras;
+    this.cpf = cpf;
   }
 
-  public String getEndereco() {
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    @Override
+    public String getEmail() {
+        return super.getEmail();
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public void setEmail(String email) {
+        super.setEmail(email);
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+    }
+
+    public String getEndereco() {
     return endereco;
   }
 
