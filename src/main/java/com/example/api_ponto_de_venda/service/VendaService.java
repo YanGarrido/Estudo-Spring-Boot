@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -19,7 +18,6 @@ public class VendaService {
 
   private final VendaRepository vendaRepository;
   private final ProdutoRepository produtoRepository;
-  private final DevolucaoRepository devolucaoRepository;
   private final ClienteRepository clienteRepository;
   private final EstoqueRepository estoqueRepository;
 
@@ -27,12 +25,10 @@ public class VendaService {
   public VendaService(VendaRepository vendaRepository,
                       ProdutoRepository produtoRepository,
                       ClienteRepository clienteRepository,
-                      DevolucaoRepository devolucaoRepository,
                       EstoqueRepository estoqueRepository) {
 
     this.vendaRepository = vendaRepository;
     this.produtoRepository = produtoRepository;
-    this.devolucaoRepository = devolucaoRepository;
     this.clienteRepository = clienteRepository;
     this.estoqueRepository = estoqueRepository;
 
