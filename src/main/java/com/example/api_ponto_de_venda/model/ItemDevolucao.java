@@ -1,10 +1,18 @@
 package com.example.api_ponto_de_venda.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "itens_devolucao")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemDevolucao {
 
   @Id
@@ -23,40 +31,6 @@ public class ItemDevolucao {
   private Integer quantidade;
 
   public ItemDevolucao(){}
-
-  public ItemDevolucao(Produto produto, Integer quantidade, Devolucao devolucao){
-    this.produto = produto;
-    this.quantidade = quantidade;
-    this.devolucao = devolucao;
-  }
-
-  public Devolucao getDevolucao() {
-    return devolucao;
-  }
-
-  public void setDevolucao(Devolucao devolucao) {
-    this.devolucao = devolucao;
-  }
-
-  public void setQuantidade(Integer quantidade) {
-    this.quantidade = quantidade;
-  }
-
-  public void setProduto(Produto produto) {
-    this.produto = produto;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public Integer getQuantidade() {
-    return quantidade;
-  }
-
-  public Produto getProduto() {
-    return produto;
-  }
 
 }
 

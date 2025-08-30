@@ -1,8 +1,17 @@
 package com.example.api_ponto_de_venda.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Table(name = "itemVenda")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemVenda {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,39 +30,5 @@ public class ItemVenda {
   private Double precoUnitario;
 
   public ItemVenda() {
-  }
-
-  public ItemVenda(Venda venda, Produto produto, Integer quantidade){
-    this.venda = venda;
-    this.quantidade = quantidade;
-    this.produto = produto;
-  }
-
-  public void setQuantidade(Integer quantidade) {
-    this.quantidade = quantidade;
-  }
-
-  public void setVenda(Venda venda) {
-    this.venda = venda;
-  }
-
-  public void setProduto(Produto produto) {
-    this.produto = produto;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public Integer getQuantidade() {
-    return quantidade;
-  }
-
-  public Produto getProduto() {
-    return produto;
-  }
-
-  public Venda getVenda() {
-    return venda;
   }
 }
