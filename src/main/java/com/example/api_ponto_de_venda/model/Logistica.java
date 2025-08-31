@@ -1,17 +1,9 @@
 package com.example.api_ponto_de_venda.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "logistica")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Logistica {
   @Id
   private Long vendaId;
@@ -27,7 +19,47 @@ public class Logistica {
   @JoinColumn(name = "venda_id")
   private Venda venda;
 
-  public Logistica() {
+  public Logistica(){}
+
+  public Logistica(String codigoDeRastreio, String status, String enderecoDeEntrega){
+    this.codigoDeRastreio = codigoDeRastreio;
+    this.enderecoDeEntrega = enderecoDeEntrega;
+    this.status = status;
   }
 
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public void setVenda(Venda venda) {
+    this.venda = venda;
+  }
+
+  public void setCodigoDeRastreio(String codigoDeRastreio) {
+    this.codigoDeRastreio = codigoDeRastreio;
+  }
+
+  public void setEnderecoDeEntrega(String enderecoDeEntrega) {
+    this.enderecoDeEntrega = enderecoDeEntrega;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public Long getVendaId() {
+    return vendaId;
+  }
+
+  public Venda getVenda() {
+    return venda;
+  }
+
+  public String getCodigoDeRastreio() {
+    return codigoDeRastreio;
+  }
+
+  public String getEnderecoDeEntrega() {
+    return enderecoDeEntrega;
+  }
 }
