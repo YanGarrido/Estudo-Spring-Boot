@@ -5,13 +5,11 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "clientes")
+@DiscriminatorValue("CLIENTE")
 public class Cliente extends Usuario {
 
   private String telefone;
   private String cpf;
-
-
   private String endereco;
 
   @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

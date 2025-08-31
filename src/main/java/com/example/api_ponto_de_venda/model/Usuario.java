@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
-@Inheritance(strategy = InheritanceType.JOINED) // define estrategia de herança
-public class Usuario {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // define estrategia de herança
+@DiscriminatorColumn(name = "user_type")
+public abstract class Usuario {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "fornecedores")
+@DiscriminatorValue("FORNECEDOR")
+
 public class Fornecedor extends Usuario {
   @Column(unique = true)
   private String cnpj;
