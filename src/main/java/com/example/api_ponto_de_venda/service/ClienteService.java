@@ -22,7 +22,7 @@ public class ClienteService {
     return clienteRepository.findAll();
   }
   public Optional<Cliente> buscarClienteEmail(String email){
-    return clienteRepository.findByEmail;
+    return clienteRepository.findByEmail(email);
   }
   public Cliente atualizarCliente(String cpf, Cliente dadosCliente){
       Cliente cliente = clienteRepository.findByCpf(cpf)
