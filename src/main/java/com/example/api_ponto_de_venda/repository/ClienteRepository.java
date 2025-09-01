@@ -13,4 +13,9 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     Optional<Cliente> findByCpf(String cpf);
 
+    boolean existsByEmail(String email);
+
+    Optional<Usuario> findByEmail(String email);
+
+
 }

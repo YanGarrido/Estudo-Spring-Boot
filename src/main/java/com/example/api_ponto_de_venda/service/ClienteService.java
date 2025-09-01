@@ -1,5 +1,6 @@
 package com.example.api_ponto_de_venda.service;
 
+import com.example.api_ponto_de_venda.exceptions.RecursoNaoEncontradoException;
 import com.example.api_ponto_de_venda.model.Cliente;
 import com.example.api_ponto_de_venda.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,21 @@ public class ClienteService {
   public List<Cliente> listarCliente(){
     return clienteRepository.findAll();
   }
-  public Optional<Cliente> buscarClienteId(Long id){
-    return clienteRepository.findById(id);
+  public Optional<Cliente> buscarClienteEmail(String email){
+    return clienteRepository.findByEmail;
   }
+  public Cliente atualizarCliente(String cpf, Cliente dadosCliente){
+      Cliente cliente = clienteRepository.findByCpf(cpf)
+              .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não Encontrado"));
 
+      if (dadosCliente.getEndereco() != null){
+          cliente.setEndereco(dadosCliente.getEndereco());
+      }
+      if (dadosCliente.getEndereco() != null){
+          cliente.setTelefone(dadosCliente.getTelefone());
+      }
+
+      return clienteRepository.save(cliente);
+  }
 
 }
