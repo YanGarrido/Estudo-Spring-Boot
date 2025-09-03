@@ -24,18 +24,22 @@ public class ClienteService {
   public Optional<Cliente> buscarClienteEmail(String email){
     return clienteRepository.findByEmail(email);
   }
-  public Cliente atualizarCliente(String cpf, Cliente dadosCliente){
-      Cliente cliente = clienteRepository.findByCpf(cpf)
-              .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não Encontrado"));
+    public Cliente atualizarCliente(String email, Cliente dadosCliente){
+        Cliente cliente = clienteRepository.findByEmail(email)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não Encontrado"));
 
-      if (dadosCliente.getEndereco() != null){
-          cliente.setEndereco(dadosCliente.getEndereco());
-      }
-      if (dadosCliente.getEndereco() != null){
-          cliente.setTelefone(dadosCliente.getTelefone());
-      }
+        if(dadosCliente.getCpf() != null){
+            cliente.setCpf(dadosCliente.getCpf());
+        }
+        if (dadosCliente.getEndereco() != null){
+            cliente.setEndereco(dadosCliente.getEndereco());
+        }
 
-      return clienteRepository.save(cliente);
-  }
+        if (dadosCliente.getTelefone() != null){
+            cliente.setTelefone(dadosCliente.getTelefone());
+        }
+
+        return clienteRepository.save(cliente);
+    }
 
 }
